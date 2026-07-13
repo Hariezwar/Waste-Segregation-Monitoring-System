@@ -72,24 +72,6 @@ It helps to:
 
 ---
 
-## 🚀 Why This Project?
-
-Instead of only collecting waste, this system focuses on **managing waste intelligently**.
-
-It helps authorities answer questions like:
-
-✔ Which area produces the most waste?
-
-✔ Which bins require immediate attention?
-
-✔ Are citizens segregating waste correctly?
-
-✔ Which collection routes are most efficient?
-
-With these insights, cities can make faster and smarter decisions.
-
----
-
 ## 🛠 Technology Stack
 
 **Frontend**
@@ -164,8 +146,8 @@ Reports & Analytics Generated
 
 ---
 
-## 👨‍💻 Developed By
+## 👨‍💻 Author
 
-HARIEZWAR U
+Hariezwar U
 ---
 
