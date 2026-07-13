@@ -87,12 +87,6 @@ It helps to:
 **Database**
 - MongoDB
 
-**Future IoT Support**
-- ESP32
-- Smart Bin Sensors
-- GPS Module
-- Ultrasonic Sensor
-
 ---
 
 ## 📂 Project Structure
