@@ -4,8 +4,6 @@
 
 ## 🌱 About the Project
 
-Waste management is one of the biggest challenges faced by cities today. Improper segregation leads to pollution, higher processing costs, and loss of recyclable materials.
-
 The **Waste Segregation Monitoring System** is a smart solution that helps Urban Local Bodies (ULBs) monitor, manage, and improve waste segregation. It provides real-time updates on waste collection, tracks bin status, and supports better decision-making using digital technology.
 
 Our vision is simple:
