@@ -178,18 +178,9 @@ Reports & Analytics Generated
 
 ---
 
-## 📸 Screenshots
-
-Project screenshots will be added soon.
-
----
-
 ## 👨‍💻 Developed By
 
 **HARIEZWAR U**
-
-B.Tech – Computer Science and Business Systems (CSBS)
-
 ---
 
 ##  🌟 Project Vision
