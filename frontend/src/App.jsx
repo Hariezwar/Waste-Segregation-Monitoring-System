@@ -18,7 +18,7 @@ import {
   Settings
 } from 'lucide-react';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || (import.meta.env.PROD ? '/api' : 'http://localhost:5000/api');
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://waste-segregation-monitoring-system-1.onrender.com/api';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');

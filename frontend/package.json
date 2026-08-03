@@ -1,11 +1,14 @@
 {
   "name": "frontend",
   "private": true,
+  "homepage": "https://hariezwar.github.io/Waste-Segregation-Monitoring-System/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "lint": "oxlint",
     "preview": "vite preview"
   },
