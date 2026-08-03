@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WavePower — Autonomous Marine Energy Orchestrator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b1121;
+            --panel-bg: rgba(20, 30, 50, 0.6);
+            --panel-border: rgba(60, 130, 240, 0.2);
+            --primary-accent: #00e5ff;
+            --secondary-accent: #3d5afe;
+            --text-main: #f0f4f8;
+            --text-muted: #8a9bb8;
+            --success: #00e676;
+            --warning: #ffb300;
+            --danger: #ff1744;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at 50% 0%, rgba(61, 90, 254, 0.15), transparent 60%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: rgba(11, 17, 33, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--panel-border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--primary-accent), var(--secondary-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-accent), var(--secondary-accent));
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--text-main);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-accent);
+            box-shadow: 0 -2px 10px var(--primary-accent);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--success);
+        }
+
+        /* Main Dashboard Area */
+        main {
+            padding: 30px 40px;
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 25px;
+            flex: 1;
+        }
+
+        /* Panels (Glassmorphism) */
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(20px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .panel:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+            border-color: rgba(60, 130, 240, 0.4);
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Live SCADA Telemetry (Left Column) */
+        .metric-group {
+            margin-bottom: 24px;
+        }
+
+        .metric-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 8px 0;
+            display: flex;
+            align-items:baseline;
+            gap: 8px;
+        }
+
+        .metric-unit {
+            font-size: 16px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .metric-trend {
+            font-size: 13px;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Center Column (Digital Twin & Chart) */
+        .center-col {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .digital-twin-view {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .twin-placeholder {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 2px dashed rgba(0, 229, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: rotate 20s linear infinite;
+        }
+
+        .twin-core {
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, var(--primary-accent), transparent 70%);
+            border-radius: 50%;
+            box-shadow: 0 0 40px var(--primary-accent);
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+        
+        .twin-orbit {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 1px solid rgba(61, 90, 254, 0.2);
+            border-radius: 50%;
+            animation: orbit 10s linear infinite;
+        }
+        
+        .orbit-node {
+            width: 12px;
+            height: 12px;
+            background: var(--secondary-accent);
+            border-radius: 50%;
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px var(--secondary-accent);
+        }
+
+        .chart-panel {
+            height: 250px;
+            background: linear-gradient(180deg, rgba(20, 30, 50, 0) 0%, rgba(20, 30, 50, 0.4) 100%);
+            position: relative;
+        }
+
+        .chart-placeholder {
+            width: 100%;
+            height: 150px;
+            border-bottom: 2px solid var(--primary-accent);
+            position: absolute;
+            bottom: 30px;
+            background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.1) 50%, transparent);
+        }
+        
+        /* Autonomous Agents (Right Column) */
+        .agent-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .agent-item {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 16px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        
+        .agent-item:hover {
+            background: rgba(0, 229, 255, 0.05);
+        }
+
+        .agent-info h4 {
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .agent-info p {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .agent-status {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-active { background: rgba(0, 230, 118, 0.1); color: var(--success); }
+        .status-optimizing { background: rgba(61, 90, 254, 0.1); color: var(--secondary-accent); }
+        .status-warning { background: rgba(255, 179, 0, 0.1); color: var(--warning); }
+
+        /* Animations */
+        @keyframes rotate {
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes orbit {
+            100% { transform: rotate(-360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.7; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            main { grid-template-columns: 1fr; }
+            .center-col { order: -1; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <div class="logo-icon">W</div>
+            WavePower AI
+        </div>
+        <nav class="nav-links">
+            <a href="#" class="nav-link active">Dashboard</a>
+            <a href="#" class="nav-link">Digital Twin</a>
+            <a href="#" class="nav-link">Analytics</a>
+            <a href="#" class="nav-link">Agent Logs</a>
+        </nav>
+        <div class="user-profile">
+            <span class="status-dot"></span>
+            <span style="font-size: 14px; font-weight: 500;">System Online</span>
+        </div>
+    </header>
+
+    <main>
+        <!-- Left Column: SCADA Telemetry -->
+        <div class="left-col">
+            <div class="panel" style="height: 100%;">
+                <div class="panel-header">
+                    <span class="panel-title">Live SCADA Telemetry</span>
+                    <span style="color: var(--primary-accent);">LIVE</span>
+                </div>
+                
+                <div class="metric-group">
+                    <div style="color: var(--text-muted); font-size: 14px;">Total Power Output</div>
+                    <div class="metric-value">
+                        42.8 <span class="metric-unit">MW</span>
+                    </div>
+                    <div class="metric-trend">↑ 3.2% vs last hour</div>
+                </div>
+
+                <div class="metric-group">
+                    <div style="color: var(--text-muted); font-size: 14px;">Wave Height (Avg)</div>
+                    <div class="metric-value">
+                        3.4 <span class="metric-unit">m</span>
+                    </div>
+                    <div class="metric-trend" style="color: var(--text-muted);">Stable</div>
+                </div>
+
+                <div class="metric-group">
+                    <div style="color: var(--text-muted); font-size: 14px;">Grid Frequency</div>
+                    <div class="metric-value">
+                        50.02 <span class="metric-unit">Hz</span>
+                    </div>
+                    <div class="metric-trend">Perfect sync</div>
+                </div>
+                
+                <div class="metric-group">
+                    <div style="color: var(--text-muted); font-size: 14px;">Array Efficiency</div>
+                    <div class="metric-value" style="color: var(--primary-accent);">
+                        89.4 <span class="metric-unit">%</span>
+                    </div>
+                    <div class="metric-trend">Optimized by AI</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Column: Digital Twin & Predictive Chart -->
+        <div class="center-col">
+            <div class="panel digital-twin-view">
+                <div style="position: absolute; top: 24px; left: 24px;" class="panel-title">Digital Twin 3D View</div>
+                <div style="position: absolute; top: 24px; right: 24px; background: rgba(0, 229, 255, 0.1); padding: 4px 12px; border-radius: 4px; font-size: 12px; color: var(--primary-accent); border: 1px solid rgba(0,229,255,0.3);">Real-time Sync</div>
+                
+                <!-- Abstract Representation of a Twin -->
+                <div class="twin-placeholder">
+                    <div class="twin-core"></div>
+                    <div class="twin-orbit" style="width: 150%; height: 150%; left: -25%; top: -25%; animation-duration: 15s;">
+                        <div class="orbit-node"></div>
+                    </div>
+                    <div class="twin-orbit" style="width: 200%; height: 200%; left: -50%; top: -50%; animation-duration: 25s; animation-direction: reverse; border-color: rgba(0, 229, 255, 0.1);">
+                        <div class="orbit-node" style="background: var(--primary-accent);"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel chart-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Predictive Energy Yield (Next 24h)</span>
+                </div>
+                <div class="chart-placeholder">
+                    <!-- A simple visual representation of a chart -->
+                    <svg width="100%" height="100%" preserveAspectRatio="none" viewBox="0 0 100 100">
+                        <path d="M0,100 L0,50 Q20,30 40,60 T80,20 T100,40 L100,100 Z" fill="rgba(0, 229, 255, 0.1)" stroke="var(--primary-accent)" stroke-width="2"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Autonomous Agents -->
+        <div class="right-col">
+            <div class="panel" style="height: 100%;">
+                <div class="panel-header">
+                    <span class="panel-title">Autonomous Control Agents</span>
+                </div>
+                
+                <div class="agent-list">
+                    <div class="agent-item">
+                        <div class="agent-info">
+                            <h4>Pitch Control AI</h4>
+                            <p>Adjusting buoys to incoming swell</p>
+                        </div>
+                        <span class="agent-status status-optimizing">Optimizing</span>
+                    </div>
+
+                    <div class="agent-item">
+                        <div class="agent-info">
+                            <h4>Grid Balancer</h4>
+                            <p>Managing export limits</p>
+                        </div>
+                        <span class="agent-status status-active">Active</span>
+                    </div>
+
+                    <div class="agent-item">
+                        <div class="agent-info">
+                            <h4>Predictive Maint.</h4>
+                            <p>Scanning WEC #4 vibrations</p>
+                        </div>
+                        <span class="agent-status status-active">Active</span>
+                    </div>
+
+                    <div class="agent-item">
+                        <div class="agent-info">
+                            <h4>Storm Protocol</h4>
+                            <p>Weather monitoring node</p>
+                        </div>
+                        <span class="agent-status status-warning">Standby</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
