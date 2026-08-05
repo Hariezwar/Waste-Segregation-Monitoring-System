@@ -140,30 +140,6 @@ Fleet Operations Dispatched As Needed
 
 ---
 
-## 🚀 Setup and Running
-
-### Prerequisites
-- Node.js (v16.0 or higher recommended) installed.
-
-### Automated Run (Windows)
-1. Double-click `setup.bat` to automatically install all dependencies across the root, frontend, and backend folders.
-2. Double-click `run.bat` to start the backend API and frontend dev server concurrently.
-
-### Manual Run (All Platforms)
-1. **Install dependencies**:
-   ```bash
-   npm install
-   npm install --prefix backend
-   npm install --prefix frontend
-   ```
-2. **Start servers concurrently**:
-   ```bash
-   npm run dev
-   ```
-3. Open your browser and navigate to `http://localhost:5173`. The backend will be listening on `http://localhost:5000`.
-
----
-
 ## 📄 License
 
 This project is licensed under the MIT License.
